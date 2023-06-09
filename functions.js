@@ -7,9 +7,9 @@ function mousedownHandler() {
   mousePressed = true;
 
   if (state === "start") {
-    state = "room";
+    state = "house";
   } else if (state === "info1") {
-    state = "room2";
+    state = "enemyroom2";
   }
 }
 
@@ -30,6 +30,8 @@ function keyDown(event) {
   }
 
   collisions();
+  housecollisions();
+  towncollisions();
 }
 
 function keyUp(event) {
@@ -64,10 +66,14 @@ function draw() {
 
   if (state === "start") {
     start();
-  } else if (state === "room") {
-    room();
-  } else if (state === "room2") {
-    room2();
+  } else if (state === "house") {
+    house();
+  } else if (state === "town") {
+    town();
+  } else if (state === "enemyroom") {
+    enemyroom();
+  } else if (state === "enemyroom2") {
+    enemyroom2();
   } else if (state === "enemy") {
     enemy();
   } else if (state === "enemy2") {
@@ -115,6 +121,8 @@ function collisions() {
 
   if (player.x < 50 && player.y < 251) {
     player.moveup = 0;
+  } else if (player.x < 50 && player.y > 250) {
+    player.moveup = 5;
   } else if (player.x >= 50 && player.y > 50) {
     player.moveup = 5;
   } else if (player.x > 49 && player.x + player.w < 751 && player.y < 51) {
@@ -137,6 +145,8 @@ function collisions() {
 
   if (player.x < 50 && player.y + player.h > 349) {
     player.movedown = 0;
+  } else if (player.x < 50 && player.y < 350) {
+    player.movedown = 5;
   } else if (player.x > 49 && player.y + player.h < 550) {
     player.movedown = 5;
   } else if (
@@ -145,5 +155,77 @@ function collisions() {
     player.y + player.h > 549
   ) {
     player.movedown = 0;
+  }
+}
+
+function housecollisions() {
+  if (player.x < 51) {
+    player.moveleft = 0;
+  } else if (player.x > 51) {
+    player.moveleft = 5;
+  }
+
+  if (player.x + player.w > 750 && player.y < 251) {
+    player.moveup = 0;
+  } else if (player.x + player.w > 750 && player.y > 250) {
+    player.moveup = 5;
+  } else if (player.x + player.w < 751 && player.y > 51) {
+    player.moveup = 5;
+  } else if (player.x + player.w < 751 && player.y < 51) {
+    player.moveup = 0;
+  }
+
+  if (
+    player.x + player.w > 799 &&
+    player.y > 249 &&
+    player.y + player.h < 351
+  ) {
+    player.moveright = 0;
+  } else if (
+    player.x + player.w < 799 &&
+    player.y > 249 &&
+    player.y + player.h < 351
+  ) {
+    player.moveright = 5;
+  } else if (player.x + player.w > 749 && player.y > 49 && player.y < 250) {
+    player.moveright = 0;
+  } else if (player.x + player.w < 750 && player.y > 49 && player.y < 250) {
+    player.moveright = 5;
+  } else if (
+    player.x + player.w > 749 &&
+    player.y > 49 &&
+    player.y + player.h > 349
+  ) {
+    player.moveright = 0;
+  } else if (player.x + player.w < 750 && player.y > 49 && player.y < 250) {
+    player.moveright = 5;
+  }
+
+  if (player.x + player.w > 750 && player.y + player.h > 349) {
+    player.movedown = 0;
+  } else if (player.x + player.w > 750 && player.y < 350) {
+    player.movedown = 5;
+  } else if (
+    player.x > 49 &&
+    player.x + player.w < 751 &&
+    player.y + player.h > 549
+  ) {
+    player.movedown = 0;
+  } else if (player.x + player.w < 751 && player.y + player.h < 550) {
+    player.movedown = 5;
+  }
+}
+function towncollisions() {
+  if (player.x + player.w > 699 && townEl.x > -800 && rightPressed) {
+    townEl.x -= player.moveleft;
+    player.moveright = 0;
+  } else if (!rightPressed) {
+    townEl.x -= 0;
+  }
+  if (player.x < 101 && townEl.x < 0 && leftPressed) {
+    townEl.x += player.moveright;
+    player.moveleft = 0;
+  } else if (!leftPressed) {
+    townEl.x += 0;
   }
 }
