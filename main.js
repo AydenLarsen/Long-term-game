@@ -15,13 +15,15 @@ let dmgRoll = 0;
 let enemyDmgRoll = 0;
 let dmgDealt = 0;
 let enemyDmgDealt = 0;
+let dmgMult = 1;
+let enemyDmgMult = 1;
 let enemyattacktext;
 let slap = document.createElement("audio");
 slap.src = "audio/slap.mp3";
 let characterImg = document.createElement("img");
 characterImg.src = "img/character.jpg";
 let player = {
-  x: 0,
+  x: 50,
   y: 275,
   w: 50,
   h: 50,
@@ -33,6 +35,10 @@ let player = {
 };
 let entity = {
   hp: 100,
+};
+let townEl = {
+  x: 0,
+  y: 0,
 };
 let gameoverimg = document.createElement("img");
 gameoverimg.src = "img/funny.jpg";
