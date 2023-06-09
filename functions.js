@@ -1,231 +1,66 @@
-window.addEventListener("load", draw);
+function enemyattackused1() {
+  ctx.fillStyle = "lightblue";
+  ctx.fillRect(0, 0, cnv.width, cnv.height);
 
-document.addEventListener("mousedown", mousedownHandler);
-document.addEventListener("mouseup", mouseupHandler);
+  ctx.fillStyle = "green";
+  ctx.fillRect(0, 340, cnv.width, cnv.height - 340);
 
-function mousedownHandler() {
-  mousePressed = true;
+  ctx.fillStyle = "sandybrown";
+  ctx.fillRect(0, 410, cnv.width, cnv.height - 410);
 
-  if (state === "start") {
-    state = "house";
-  } else if (state === "info1") {
-    state = "enemyroom2";
-  }
+  ctx.font = "20px Consolas";
+  ctx.fillStyle = "black";
+  ctx.fillText(`Health: ${player.hp}`, 70, 330);
+  ctx.fillText(`Health: ${entity.hp}`, 510, 220);
+
+  ctx.drawImage(characterImg, 70, 360, 120, 120);
+
+  ctx.fillStyle = "red";
+  ctx.fillRect(510, 260, 220, 220);
+
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, 800, 100);
+
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 4;
+  ctx.strokeRect(0, 0, 800, 100);
+
+  ctx.font = "40px Consolas";
+  ctx.fillStyle = "black";
+  ctx.fillText(`${enemyattacktext}`, 30, 70);
 }
 
-document.addEventListener("keydown", keyDown);
-document.addEventListener("keyup", keyUp);
+function enemyattackused2() {
+  ctx.fillStyle = "lightgray";
+  ctx.fillRect(0, 0, cnv.width, cnv.height);
 
-function keyDown(event) {
-  if (!event.repeat) {
-    if (event.keyCode === 87) {
-      upPressed = true;
-    } else if (event.keyCode === 65) {
-      leftPressed = true;
-    } else if (event.keyCode === 83) {
-      downPressed = true;
-    } else if (event.keyCode === 68) {
-      rightPressed = true;
-    }
-  }
+  ctx.fillStyle = "darkgray";
+  ctx.fillRect(0, 340, cnv.width, cnv.height - 340);
 
-  collisions();
-  housecollisions();
-  towncollisions();
-}
+  ctx.fillStyle = "gray";
+  ctx.fillRect(0, 410, cnv.width, cnv.height - 410);
 
-function keyUp(event) {
-  if (!event.repeat) {
-    if (event.keyCode === 87) {
-      upPressed = false;
-    } else if (event.keyCode === 65) {
-      leftPressed = false;
-    } else if (event.keyCode === 83) {
-      downPressed = false;
-    } else if (event.keyCode === 68) {
-      rightPressed = false;
-    }
-  }
-}
+  ctx.font = "20px Consolas";
+  ctx.fillStyle = "black";
+  ctx.fillText(`Health: ${player.hp}`, 70, 330);
+  ctx.fillText(`Health: ${entity.hp}`, 510, 220);
 
-function mouseupHandler() {
-  mousePressed = false;
-}
+  ctx.drawImage(characterImg, 70, 360, 120, 120);
 
-function draw() {
-  if (upPressed) {
-    player.y -= player.moveup;
-  } else if (downPressed) {
-    player.y += player.movedown;
-  }
-  if (rightPressed) {
-    player.x += player.moveright;
-  } else if (leftPressed) {
-    player.x -= player.moveleft;
-  }
+  ctx.fillStyle = "red";
+  ctx.fillRect(510, 260, 220, 220);
 
-  if (state === "start") {
-    start();
-  } else if (state === "house") {
-    house();
-  } else if (state === "town") {
-    town();
-  } else if (state === "enemyroom") {
-    enemyroom();
-  } else if (state === "enemyroom2") {
-    enemyroom2();
-  } else if (state === "enemy") {
-    enemy();
-  } else if (state === "enemy2") {
-    enemy2();
-  } else if (state === "info1") {
-    info1();
-  } else if (state === "attackused1") {
-    attackused1();
-  } else if (state === "attackused2") {
-    attackused2();
-  } else if (state === "enemyattackused1") {
-    enemyattackused1();
-  } else if (state === "enemyattackused2") {
-    enemyattackused2();
-  } else if (state === "win") {
-    win();
-  } else if (state === "gameover") {
-    gameover();
-  }
-  requestAnimationFrame(draw);
-}
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, 200, 100);
+  ctx.fillRect(200, 0, 200, 100);
+  ctx.fillRect(400, 0, 200, 100);
+  ctx.fillRect(600, 0, 200, 100);
 
-function collisions() {
-  if (player.x < 1 && player.y > 249 && player.y + player.h < 351) {
-    player.moveleft = 0;
-  } else if (player.x > 1 && player.y > 249 && player.y + player.h < 351) {
-    player.moveleft = 5;
-  } else if (player.x < 51 && player.y > 49 && player.y < 250) {
-    player.moveleft = 0;
-  } else if (player.x > 51 && player.y > 49 && player.y < 250) {
-    player.moveleft = 5;
-  } else if (
-    player.x < 51 &&
-    player.y + player.h > 349 &&
-    player.y + player.h < cnv.width - 50
-  ) {
-    player.moveleft = 0;
-  } else if (
-    player.x > 51 &&
-    player.y + player.h > 349 &&
-    player.y + player.h < cnv.width - 50
-  ) {
-    player.moveleft = 5;
-  }
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 4;
+  ctx.strokeRect(0, 0, 800, 100);
 
-  if (player.x < 50 && player.y < 251) {
-    player.moveup = 0;
-  } else if (player.x < 50 && player.y > 250) {
-    player.moveup = 5;
-  } else if (player.x >= 50 && player.y > 50) {
-    player.moveup = 5;
-  } else if (player.x > 49 && player.x + player.w < 751 && player.y < 51) {
-    player.moveup = 0;
-  }
-
-  if (
-    player.x + player.w > 749 &&
-    player.y >= 50 &&
-    player.y + player.h <= cnv.width - 50
-  ) {
-    player.moveright = 0;
-  } else if (
-    player.x + player.w < 749 &&
-    player.y > 49 &&
-    player.y + player.h <= cnv.width - 50
-  ) {
-    player.moveright = 5;
-  }
-
-  if (player.x < 50 && player.y + player.h > 349) {
-    player.movedown = 0;
-  } else if (player.x < 50 && player.y < 350) {
-    player.movedown = 5;
-  } else if (player.x > 49 && player.y + player.h < 550) {
-    player.movedown = 5;
-  } else if (
-    player.x > 49 &&
-    player.x + player.w < 751 &&
-    player.y + player.h > 549
-  ) {
-    player.movedown = 0;
-  }
-}
-
-function housecollisions() {
-  if (player.x < 51) {
-    player.moveleft = 0;
-  } else if (player.x > 51) {
-    player.moveleft = 5;
-  }
-
-  if (player.x + player.w > 750 && player.y < 251) {
-    player.moveup = 0;
-  } else if (player.x + player.w > 750 && player.y > 250) {
-    player.moveup = 5;
-  } else if (player.x + player.w < 751 && player.y > 51) {
-    player.moveup = 5;
-  } else if (player.x + player.w < 751 && player.y < 51) {
-    player.moveup = 0;
-  }
-
-  if (
-    player.x + player.w > 799 &&
-    player.y > 249 &&
-    player.y + player.h < 351
-  ) {
-    player.moveright = 0;
-  } else if (
-    player.x + player.w < 799 &&
-    player.y > 249 &&
-    player.y + player.h < 351
-  ) {
-    player.moveright = 5;
-  } else if (player.x + player.w > 749 && player.y > 49 && player.y < 250) {
-    player.moveright = 0;
-  } else if (player.x + player.w < 750 && player.y > 49 && player.y < 250) {
-    player.moveright = 5;
-  } else if (
-    player.x + player.w > 749 &&
-    player.y > 49 &&
-    player.y + player.h > 349
-  ) {
-    player.moveright = 0;
-  } else if (player.x + player.w < 750 && player.y > 49 && player.y < 250) {
-    player.moveright = 5;
-  }
-
-  if (player.x + player.w > 750 && player.y + player.h > 349) {
-    player.movedown = 0;
-  } else if (player.x + player.w > 750 && player.y < 350) {
-    player.movedown = 5;
-  } else if (
-    player.x > 49 &&
-    player.x + player.w < 751 &&
-    player.y + player.h > 549
-  ) {
-    player.movedown = 0;
-  } else if (player.x + player.w < 751 && player.y + player.h < 550) {
-    player.movedown = 5;
-  }
-}
-function towncollisions() {
-  if (player.x + player.w > 699 && townEl.x > -800 && rightPressed) {
-    townEl.x -= player.moveleft;
-    player.moveright = 0;
-  } else if (!rightPressed) {
-    townEl.x -= 0;
-  }
-  if (player.x < 101 && townEl.x < 0 && leftPressed) {
-    townEl.x += player.moveright;
-    player.moveleft = 0;
-  } else if (!leftPressed) {
-    townEl.x += 0;
-  }
+  ctx.font = "40px Consolas";
+  ctx.fillStyle = "black";
+  ctx.fillText(`${enemyattacktext}`, 30, 70);
 }
